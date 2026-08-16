@@ -1,0 +1,40 @@
+# Python Bytecode and cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# System files
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Logs
+logs/*.log
+*.log
+
+# Scraped output files / screenshots (optional, if you do not want to track them)
+# data/raw/*.csv
+# data/raw/*.json
+tests/*.png
+*.png
+*.html
+*.xlsx
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# Ignore documentation folder
+docs/
+
+# Whitelist visual assets
+!assets/
+!assets/*.png

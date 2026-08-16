@@ -1,0 +1,17 @@
+=== LINEAR SVM CLASSIFICATION REPORT ===
+              precision    recall  f1-score   support
+
+Negative (0)       0.60      0.63      0.61       310
+ Neutral (1)       0.28      0.27      0.28       164
+Positive (2)       0.95      0.95      0.95      3111
+
+    accuracy                           0.89      3585
+   macro avg       0.61      0.62      0.61      3585
+weighted avg       0.89      0.89      0.89      3585
+
+
+=== MAJORITY CLASS BASELINE ===
+Majority Class in Training Set: 2 (Positive (2))
+Baseline Accuracy: 0.8678
+Baseline Macro F1: 0.3097
+Baseline Weighted F1: 0.8064

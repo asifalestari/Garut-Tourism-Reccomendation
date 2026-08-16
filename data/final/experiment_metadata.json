@@ -1,0 +1,50 @@
+{
+    "experiment_date": "2026-08-14T15:38:20.945911",
+    "dataset_size": 17923,
+    "train_size": 14338,
+    "test_size": 3585,
+    "random_state": 42,
+    "class_weights": "balanced",
+    "overall_accuracy": 0.8878661087866109,
+    "macro_f1": 0.6125113431478636,
+    "weighted_f1": 0.8884709164768182,
+    "baseline_accuracy": 0.8677824267782427,
+    "baseline_macro_f1": 0.3097371565113501,
+    "class_distribution": {
+        "Negative": 1551,
+        "Neutral": 819,
+        "Positive": 15553
+    },
+    "train_class_distribution": {
+        "Negative": 1241,
+        "Neutral": 655,
+        "Positive": 12442
+    },
+    "test_class_distribution": {
+        "Negative": 310,
+        "Neutral": 164,
+        "Positive": 3111
+    },
+    "tfidf_parameters": {
+        "max_features": 5000,
+        "ngram_range": [
+            1,
+            2
+        ]
+    },
+    "svm_parameters": {
+        "C": 1.0,
+        "kernel": "linear"
+    },
+    "threshold_configuration": {
+        "min_reviews": 10,
+        "negative_threshold": 15.0,
+        "positive_threshold": 70.0,
+        "neutral_threshold": 25.0,
+        "average_rating_threshold": 4.0
+    },
+    "library_versions": {
+        "scikit-learn": "1.9.0",
+        "pandas": "3.0.3"
+    }
+}

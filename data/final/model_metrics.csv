@@ -1,0 +1,6 @@
+class_name,precision,recall,f1_score,support
+Negative (0),0.6000,0.6290,0.6142,310
+Neutral (1),0.2761,0.2744,0.2752,164
+Positive (2),0.9503,0.9460,0.9481,3111
+macro_avg,0.6088,0.6165,0.6125,3585
+weighted_avg,0.8891,0.8879,0.8885,3585

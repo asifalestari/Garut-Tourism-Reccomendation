@@ -1,0 +1,2 @@
+from feature_extraction.tfidf import fit_tfidf, transform_tfidf
+from feature_extraction.vectorizer import save_vectorizer, load_vectorizer
