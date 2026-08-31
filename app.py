@@ -716,8 +716,8 @@ elif menu == "🛠️ Parameter & Evaluasi Model":
     with meta_cols[1]:
         st.markdown("##### Kinerja Model SVM (pada Test Set)")
         st.markdown(f"**Akurasi Model Keseluruhan:** {metadata.get('overall_accuracy', 0.8879)*100:.2f}%")
-        st.markdown(f"**Macro F1-Score:** {metadata.get('macro_f1', 0.6125):.4f}")
-        st.markdown(f"**Weighted F1-Score:** {metadata.get('weighted_f1', 0.8885):.4f}")
+        st.markdown(f"**Macro F1-Score:** {metadata.get('macro_f1', 0.6132):.4f}")
+        st.markdown(f"**Weighted F1-Score:** {metadata.get('weighted_f1', 0.8883):.4f}")
         st.markdown(f"**Akurasi Baseline:** {metadata.get('baseline_accuracy', 0.8678)*100:.2f}%")
         st.markdown(f"**Macro F1-Score Baseline:** {metadata.get('baseline_macro_f1', 0.3101):.4f}")
         st.markdown("*Keterangan:* Model SVM Linear menunjukkan peningkatan kinerja yang signifikan dibandingkan baseline pengklasifikasi mayoritas.")

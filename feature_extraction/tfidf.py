@@ -13,8 +13,9 @@ def fit_tfidf(train_texts: List[str]) -> TfidfVectorizer:
     logger.info("Fitting TF-IDF Vectorizer on training data...")
     max_features = getattr(settings, "TFIDF_MAX_FEATURES", 5000)
     ngram_range = getattr(settings, "TFIDF_NGRAM_RANGE", (1, 2))
+    sublinear_tf = getattr(settings, "TFIDF_SUBLINEAR_TF", True)
     
-    vectorizer = TfidfVectorizer(max_features=max_features, ngram_range=ngram_range)
+    vectorizer = TfidfVectorizer(max_features=max_features, ngram_range=ngram_range, sublinear_tf=sublinear_tf)
     vectorizer.fit(train_texts)
     
     logger.info(f"TF-IDF Vectorizer fitted with vocabulary size: {len(vectorizer.vocabulary_)}")

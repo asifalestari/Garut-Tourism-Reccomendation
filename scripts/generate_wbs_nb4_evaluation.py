@@ -215,12 +215,12 @@ display(df_test_analysis[~df_test_analysis["is_correct"]][["review_text", "actua
     cells.append(nbf.v4.new_markdown_cell("""## 6. Kesimpulan Tahap Evaluation
 
 1. **Kinerja Model Linear SVM**:
-   - Model mencapai **Akurasi 88.79%**, **Macro F1 0.6125**, dan **Weighted F1 0.8885**.
-   - Model mengungguli baseline secara signifikan (Macro F1 meningkat dari 0.3097 menjadi 0.6125).
+   - Model mencapai **Akurasi 88.79%**, **Macro F1 0.6132**, dan **Weighted F1 0.8883**.
+   - Model mengungguli baseline secara signifikan (Macro F1 meningkat dari 0.3097 menjadi 0.6132).
 2. **Karakteristik Kinerja per Kelas**:
    - **Positif**: F1-Score **0.95** (performa luar biasa).
-   - **Negatif**: F1-Score **0.61** (mampu mendeteksi keluhan wisatawan dengan baik).
-   - **Netral**: F1-Score **0.28** (menjadi tantangan utama karena ambiguitas linguistik ulasan 3 bintang).
+   - **Negatif**: F1-Score **0.62** (mampu mendeteksi keluhan wisatawan dengan baik).
+   - **Netral**: F1-Score **0.27** (menjadi tantangan utama karena ambiguitas linguistik ulasan 3 bintang).
 3. Hasil model siap diterapkan untuk perumusan kebijakan pada **WBS Tahap 6: Deployment & Policy Analysis**.
 """))
 

@@ -1,8 +1,8 @@
 === LINEAR SVM CLASSIFICATION REPORT ===
               precision    recall  f1-score   support
 
-Negative (0)       0.60      0.63      0.61       310
- Neutral (1)       0.28      0.27      0.28       164
+Negative (0)       0.60      0.64      0.62       310
+ Neutral (1)       0.28      0.27      0.27       164
 Positive (2)       0.95      0.95      0.95      3111
 
     accuracy                           0.89      3585

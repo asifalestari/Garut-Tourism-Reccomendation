@@ -20,7 +20,7 @@ def create_wbs_nb0():
 1. **WBS Tahap 2: Data Understanding** (Sumber Google Maps, 382 destinasi, 36.574 ulasan mentah, missing values & distribusi rating)
 2. **WBS Tahap 3: Data Preparation** (Deduplikasi composite key, 5 tahap text preprocessing, corong data lineage, pelabelan, TF-IDF)
 3. **WBS Tahap 4: Modeling** (Stratified Split 80:20, pencegahan leakage, Linear SVM `class_weight='balanced'`, bobot koefisien fitur)
-4. **WBS Tahap 5: Evaluation** (Pengujian test set, Confusion Matrix Heatmap, Akurasi 88.79%, Macro F1 0.6125, perbandingan baseline, error analysis)
+4. **WBS Tahap 5: Evaluation** (Pengujian test set, Confusion Matrix Heatmap, Akurasi 88.79%, Macro F1 0.6132, perbandingan baseline, error analysis)
 5. **WBS Tahap 6: Deployment & Policy Analysis** (Agregasi 272 destinasi, 4 klasifikasi kebijakan promosi dinas, integrasi dashboard Streamlit)
 """))
 
@@ -331,7 +331,7 @@ Pipeline penelitian ini telah merealisasikan seluruh rangkaian **Work Breakdown 
 1. **WBS 2 Data Understanding**: 382 destinasi dan 36.574 ulasan mentah dipahami karakteristiknya.
 2. **WBS 3 Data Preparation**: Rangkaian 5 tahap preprocessing dan ekstraksi TF-IDF menghasilkan 17.923 ulasan bersih.
 3. **WBS 4 Modeling**: Model Linear SVM terlatih dengan `class_weight='balanced'` untuk menangani ketidakseimbangan kelas.
-4. **WBS 5 Evaluation**: Model mencapai Akurasi **88.79%**, Macro F1 **0.6125**, dan Weighted F1 **0.8885** pada data uji.
+4. **WBS 5 Evaluation**: Model mencapai Akurasi **88.79%**, Macro F1 **0.6132**, dan Weighted F1 **0.8883** pada data uji.
 5. **WBS 6 Deployment & Policy**: 272 destinasi terkelompokkan ke dalam 4 kategori kebijakan dan siap disajikan dalam dashboard Streamlit (`app.py`).
 """))
 

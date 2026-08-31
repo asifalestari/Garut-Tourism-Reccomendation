@@ -29,7 +29,7 @@ Distribusi prediksi sentimen keseluruhan ulasan pariwisata:
 ## 4. Evaluasi Model SVM
 Kinerja pengklasifikasi teks Linear SVM pada Test Set (20% split):
 - **Akurasi Model:** 88.79%
-- **Macro F1-Score:** 0.6125
+- **Macro F1-Score:** 0.6132
 - *Catatan:* Perincian presisi, recall, dan confusion matrix tersimpan di berkas biner/gambar laporan.
 
 ## 5. Analisis Sentimen per Destinasi

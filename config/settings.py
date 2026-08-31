@@ -40,6 +40,7 @@ SVM_CLASS_WEIGHT = "balanced"
 # TF-IDF Settings
 TFIDF_MAX_FEATURES = 5000
 TFIDF_NGRAM_RANGE = (1, 2)
+TFIDF_SUBLINEAR_TF = True
 
 # Policy Classification Operational Thresholds
 MIN_REVIEWS = 10
