@@ -122,7 +122,7 @@ def main():
     df_processed = run_preprocessing_pipeline(df_raw)
     
     # Export processed reviews to data/final/processed_reviews.csv
-    processed_cols = ["destination_name", "author", "rating", "review_text", "cleaned_text"]
+    processed_cols = ["destination_name", "author", "rating", "review_text", "cleaned_text", "review_date"]
     df_processed[processed_cols].to_csv(settings.FINAL_DATA_DIR / "processed_reviews.csv", index=False)
     logger.info("Exported processed_reviews.csv")
     
@@ -130,7 +130,7 @@ def main():
     df_labeled = apply_sentiment_labeling(df_processed)
     
     # Export labeled reviews to data/final/labeled_reviews.csv
-    labeled_cols = ["destination_name", "author", "rating", "review_text", "cleaned_text", "sentiment_label"]
+    labeled_cols = ["destination_name", "author", "rating", "review_text", "cleaned_text", "sentiment_label", "review_date"]
     df_labeled[labeled_cols].to_csv(settings.FINAL_DATA_DIR / "labeled_reviews.csv", index=False)
     logger.info("Exported labeled_reviews.csv")
     
