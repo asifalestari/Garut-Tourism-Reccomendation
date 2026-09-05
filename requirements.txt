@@ -10,3 +10,4 @@ openpyxl>=3.1.2
 ipykernel>=6.25.0
 streamlit>=1.30.0
 plotly>=5.18.0
+imbalanced-learn>=0.12.0

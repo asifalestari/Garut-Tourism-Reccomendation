@@ -32,15 +32,27 @@ MAX_REVIEW_MONTHS = 12      # Alias for age limit in months
 # Sentiment Analysis Settings
 TEST_SIZE = 0.2
 RANDOM_STATE = 42
-SVM_C = 1.0
+SVM_C = 0.2
 SVM_KERNEL = "linear"
 SVM_GAMMA = "scale"
 SVM_CLASS_WEIGHT = "balanced"
 
+# Imbalance Handling & Decision Boundary Settings
+USE_SMOTE = False  # Set to True if SMOTE oversampling is desired
+SMOTE_K_NEIGHBORS = 5
+USE_THRESHOLD_MOVING = True
+# Optimal decision threshold vector: [Negative (0), Neutral (1), Positive (2)]
+# Calibrated probability thresholds to balance Precision, Recall, and Macro F1
+CLASS_PROB_THRESHOLDS = {
+    0: 0.225,  # Negative threshold (optimizes recall on minority negative reviews)
+    1: 0.150,  # Neutral threshold (optimizes sensitivity on minority neutral reviews)
+    2: 0.625   # Positive threshold (regularizes over-dominance of positive class)
+}
+
 # TF-IDF Settings
-TFIDF_MAX_FEATURES = 5000
+TFIDF_MAX_FEATURES = 10000
 TFIDF_NGRAM_RANGE = (1, 2)
-TFIDF_SUBLINEAR_TF = True
+TFIDF_SUBLINEAR_TF = False
 
 # Policy Classification Operational Thresholds
 MIN_REVIEWS = 10

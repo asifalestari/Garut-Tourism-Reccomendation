@@ -1,17 +1,25 @@
-=== LINEAR SVM CLASSIFICATION REPORT ===
+=== CALIBRATED LINEAR SVM CLASSIFICATION REPORT ===
+Configuration: SMOTE=False, Threshold Moving=True
+Decision Thresholds: {0: 0.225, 1: 0.15, 2: 0.625}
+Overall Accuracy   : 0.8996
+Balanced Accuracy  : 0.6327
+Macro F1-Score     : 0.6329
+Weighted F1-Score  : 0.8958
+
               precision    recall  f1-score   support
 
-Negative (0)       0.60      0.64      0.62       310
- Neutral (1)       0.28      0.27      0.27       164
-Positive (2)       0.95      0.95      0.95      3111
+Negative (0)     0.6173    0.7129    0.6617       310
+ Neutral (1)     0.3725    0.2317    0.2857       164
+Positive (2)     0.9491    0.9534    0.9513      3111
 
-    accuracy                           0.89      3585
-   macro avg       0.61      0.62      0.61      3585
-weighted avg       0.89      0.89      0.89      3585
+    accuracy                         0.8996      3585
+   macro avg     0.6463    0.6327    0.6329      3585
+weighted avg     0.8941    0.8996    0.8958      3585
 
 
 === MAJORITY CLASS BASELINE ===
 Majority Class in Training Set: 2 (Positive (2))
-Baseline Accuracy: 0.8678
-Baseline Macro F1: 0.3097
-Baseline Weighted F1: 0.8064
+Baseline Accuracy         : 0.8678
+Baseline Balanced Accuracy: 0.3333
+Baseline Macro F1         : 0.3097
+Baseline Weighted F1      : 0.8064

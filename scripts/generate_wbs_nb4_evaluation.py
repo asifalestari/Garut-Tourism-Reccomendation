@@ -52,6 +52,7 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import (
     accuracy_score,
+    balanced_accuracy_score,
     precision_recall_fscore_support,
     classification_report,
     confusion_matrix,
@@ -143,6 +144,7 @@ Pengukuran mencakup:
 
     cells.append(nbf.v4.new_code_cell("""# Perhitungan Metrik Evaluasi
 acc = accuracy_score(y_test, y_pred)
+bal_acc = balanced_accuracy_score(y_test, y_pred)
 p_class, r_class, f_class, s_class = precision_recall_fscore_support(y_test, y_pred, labels=[0, 1, 2], zero_division=0)
 macro_p, macro_r, macro_f, _ = precision_recall_fscore_support(y_test, y_pred, average="macro", zero_division=0)
 weighted_p, weighted_r, weighted_f, _ = precision_recall_fscore_support(y_test, y_pred, average="weighted", zero_division=0)
@@ -157,6 +159,7 @@ tabel_evaluasi = pd.DataFrame({
 })
 
 print(f"🎯 AKURASI KESELURUHAN (Accuracy): {acc*100:.2f}%")
+print(f"⚖️ BALANCED ACCURACY SCORE    : {bal_acc*100:.2f}%")
 print(f"⚖️ MACRO F1-SCORE             : {macro_f:.4f}")
 print(f"📈 WEIGHTED F1-SCORE          : {weighted_f:.4f}")
 display(tabel_evaluasi)
@@ -173,12 +176,13 @@ maj_class = int(y_train.value_counts().idxmax())
 y_pred_baseline = [maj_class] * len(y_test)
 
 base_acc = accuracy_score(y_test, y_pred_baseline)
+base_bal_acc = balanced_accuracy_score(y_test, y_pred_baseline)
 _, _, base_macro_f, _ = precision_recall_fscore_support(y_test, y_pred_baseline, average="macro", zero_division=0)
 _, _, base_weighted_f, _ = precision_recall_fscore_support(y_test, y_pred_baseline, average="weighted", zero_division=0)
 
 tabel_komparasi_baseline = pd.DataFrame([
-    {"Model Klasifikasi": "Linear SVM (Model Usulan)", "Akurasi (Accuracy)": f"{acc*100:.2f}%", "Macro F1-Score": f"{macro_f:.4f}", "Weighted F1-Score": f"{weighted_f:.4f}", "Peningkatan vs Baseline": f"+{(macro_f - base_macro_f):.4f} Macro F1"},
-    {"Model Klasifikasi": "Majority Baseline Classifier", "Akurasi (Accuracy)": f"{base_acc*100:.2f}%", "Macro F1-Score": f"{base_macro_f:.4f}", "Weighted F1-Score": f"{base_weighted_f:.4f}", "Peningkatan vs Baseline": "Acuan Dasar (Baseline)"}
+    {"Model Klasifikasi": "Calibrated Linear SVM (Model Usulan)", "Akurasi (Accuracy)": f"{acc*100:.2f}%", "Balanced Accuracy": f"{bal_acc*100:.2f}%", "Macro F1-Score": f"{macro_f:.4f}", "Weighted F1-Score": f"{weighted_f:.4f}", "Peningkatan vs Baseline": f"+{(macro_f - base_macro_f):.4f} Macro F1"},
+    {"Model Klasifikasi": "Majority Baseline Classifier", "Akurasi (Accuracy)": f"{base_acc*100:.2f}%", "Balanced Accuracy": f"{base_bal_acc*100:.2f}%", "Macro F1-Score": f"{base_macro_f:.4f}", "Weighted F1-Score": f"{base_weighted_f:.4f}", "Peningkatan vs Baseline": "Acuan Dasar (Baseline)"}
 ])
 
 display(tabel_komparasi_baseline)

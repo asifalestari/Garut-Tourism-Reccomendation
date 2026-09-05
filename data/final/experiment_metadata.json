@@ -1,15 +1,27 @@
 {
-    "experiment_date": "2026-08-31T21:47:57.225132",
+    "experiment_date": "2026-09-04T16:17:38.408963",
     "dataset_size": 17923,
     "train_size": 14338,
     "test_size": 3585,
     "random_state": 42,
     "class_weights": "balanced",
-    "overall_accuracy": 0.8878661087866109,
-    "macro_f1": 0.613217081231551,
-    "weighted_f1": 0.8882639331663141,
+    "overall_accuracy": 0.899581589958159,
+    "balanced_accuracy": 0.6326672451407377,
+    "macro_f1": 0.6328805780722986,
+    "weighted_f1": 0.8957651737025418,
     "baseline_accuracy": 0.8677824267782427,
+    "baseline_balanced_accuracy": 0.3333333333333333,
     "baseline_macro_f1": 0.3097371565113501,
+    "use_smote": false,
+    "smote_info": {
+        "applied": false
+    },
+    "use_threshold_moving": true,
+    "decision_thresholds": {
+        "0": 0.225,
+        "1": 0.15,
+        "2": 0.625
+    },
     "class_distribution": {
         "Negative": 1551,
         "Neutral": 819,
@@ -26,15 +38,18 @@
         "Positive": 3111
     },
     "tfidf_parameters": {
-        "max_features": 5000,
+        "max_features": 10000,
         "ngram_range": [
             1,
             2
-        ]
+        ],
+        "sublinear_tf": false
     },
     "svm_parameters": {
-        "C": 1.0,
-        "kernel": "linear"
+        "C": 0.2,
+        "kernel": "linear",
+        "class_weight": "balanced",
+        "probability_calibrated": true
     },
     "threshold_configuration": {
         "min_reviews": 10,

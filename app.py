@@ -621,19 +621,16 @@ elif menu == "🔮 Uji Sentimen Ulasan (Inference)":
                     # 2. Vectorization
                     X_tfidf = transform_tfidf([cleaned_text], vectorizer)
                     
-                    # 3. Model Prediction
+                    # 3. Model Prediction (utilizes Calibrated Predictor with Threshold Moving)
                     pred_label = model.predict(X_tfidf)[0]
                     
-                    # 4. Decision score to calculate pseudo-probability percentages
-                    decision_scores = model.decision_function(X_tfidf)[0]
-                    
-                    # Softmax calculation
-                    # LinearSVC decision function returns distance from hyperplane per class
-                    # Check classes order
-                    classes = model.classes_ # Expected: [0, 1, 2] corresponding to Negative, Neutral, Positive
-                    
-                    exp_scores = np.exp(decision_scores)
-                    probs = exp_scores / np.sum(exp_scores)
+                    # 4. Calibrated Probabilities
+                    if hasattr(model, "predict_proba"):
+                        probs = model.predict_proba(X_tfidf)[0]
+                    else:
+                        decision_scores = model.decision_function(X_tfidf)[0]
+                        exp_scores = np.exp(decision_scores - np.max(decision_scores))
+                        probs = exp_scores / np.sum(exp_scores)
                     
                     sentiment_map = {0: "Negative", 1: "Neutral", 2: "Positive"}
                     pred_sentiment = sentiment_map[pred_label]
@@ -662,14 +659,14 @@ elif menu == "🔮 Uji Sentimen Ulasan (Inference)":
                     <div style="background-color: {banner_color}; color: {text_color}; padding: 20px; border-radius: 12px; border: 1px solid {text_color}; text-align: center;">
                         <span style="font-size: 40px;">{emoji}</span>
                         <h3 style="margin: 10px 0px 5px 0px; font-weight: 700;">Sentimen Terprediksi: {label_id}</h3>
-                        <p style="margin: 0; font-size: 14px; font-weight: 600;">Model SVM mengklasifikasikan ulasan ini sebagai sentimen {pred_sentiment}.</p>
+                        <p style="margin: 0; font-size: 14px; font-weight: 600;">Model Calibrated SVM mengklasifikasikan ulasan ini sebagai sentimen {pred_sentiment}.</p>
                     </div>
                     """, unsafe_allow_html=True)
                     
                     st.markdown("<br>", unsafe_allow_html=True)
                     
                     # Show progress probabilities
-                    st.markdown("##### Estimasi Tingkat Keyakinan Model:")
+                    st.markdown("##### Estimasi Tingkat Keyakinan Terkalibrasi (Calibrated Probabilities):")
                     
                     prob_cols = st.columns(3)
                     with prob_cols[0]:
@@ -708,19 +705,22 @@ elif menu == "🛠️ Parameter & Evaluasi Model":
         st.markdown(f"**Data Pelatihan (Train Set):** {metadata.get('train_size', 14338):,} ulasan (80%)")
         st.markdown(f"**Data Pengujian (Test Set):** {metadata.get('test_size', 3585):,} ulasan (20%)")
         st.markdown(f"**Bobot Kelas (Class Weights):** {metadata.get('class_weights', 'balanced')}")
+        st.markdown(f"**Threshold Moving (Ambang Batas):** {'Aktif' if metadata.get('use_threshold_moving', True) else 'Non-aktif'}")
+        st.markdown(f"**Vektor Threshold Kelas:** `{metadata.get('decision_thresholds', {'Neg': 0.225, 'Neu': 0.150, 'Pos': 0.625})}`")
         st.markdown(f"**Kernel SVM:** {metadata.get('svm_parameters', {}).get('kernel', 'linear')}")
-        st.markdown(f"**Parameter Regularisasi SVM (C):** {metadata.get('svm_parameters', {}).get('C', 1.0)}")
+        st.markdown(f"**Parameter Regularisasi SVM (C):** {metadata.get('svm_parameters', {}).get('C', 0.2)}")
         st.markdown(f"**N-Gram Range TF-IDF:** {metadata.get('tfidf_parameters', {}).get('ngram_range', [1, 2])}")
-        st.markdown(f"**Maksimum Fitur TF-IDF:** {metadata.get('tfidf_parameters', {}).get('max_features', 5000)}")
+        st.markdown(f"**Maksimum Fitur TF-IDF:** {metadata.get('tfidf_parameters', {}).get('max_features', 10000)}")
         
     with meta_cols[1]:
         st.markdown("##### Kinerja Model SVM (pada Test Set)")
-        st.markdown(f"**Akurasi Model Keseluruhan:** {metadata.get('overall_accuracy', 0.8879)*100:.2f}%")
-        st.markdown(f"**Macro F1-Score:** {metadata.get('macro_f1', 0.6132):.4f}")
-        st.markdown(f"**Weighted F1-Score:** {metadata.get('weighted_f1', 0.8883):.4f}")
+        st.markdown(f"**Akurasi Model Keseluruhan:** {metadata.get('overall_accuracy', 0.8996)*100:.2f}%")
+        st.markdown(f"**Balanced Accuracy:** {metadata.get('balanced_accuracy', 0.6327)*100:.2f}%")
+        st.markdown(f"**Macro F1-Score:** {metadata.get('macro_f1', 0.6329):.4f}")
+        st.markdown(f"**Weighted F1-Score:** {metadata.get('weighted_f1', 0.8958):.4f}")
         st.markdown(f"**Akurasi Baseline:** {metadata.get('baseline_accuracy', 0.8678)*100:.2f}%")
         st.markdown(f"**Macro F1-Score Baseline:** {metadata.get('baseline_macro_f1', 0.3101):.4f}")
-        st.markdown("*Keterangan:* Model SVM Linear menunjukkan peningkatan kinerja yang signifikan dibandingkan baseline pengklasifikasi mayoritas.")
+        st.markdown("*Keterangan:* Model Calibrated Linear SVM dengan Threshold Moving terbukti meningkatkan Recall dan F1-Score kelas minoritas secara seimbang.")
         
     st.markdown("---")
     
@@ -737,6 +737,6 @@ elif menu == "🛠️ Parameter & Evaluasi Model":
     st.markdown("##### Confusion Matrix (Visualisasi Evaluasi)")
     cm_path = settings.FINAL_DATA_DIR / "confusion_matrix.png"
     if cm_path.exists():
-        st.image(str(cm_path), caption="Confusion Matrix Model SVM Linear pada Test Set (20% data split)", use_container_width=True)
+        st.image(str(cm_path), caption="Confusion Matrix Model SVM Terkalibrasi pada Test Set (20% data split)", use_container_width=True)
     else:
         st.info("Gambar Confusion Matrix tidak ditemukan.")

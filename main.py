@@ -167,20 +167,29 @@ def save_experiment_metadata(train_meta, eval_metrics):
         "random_state": 42,
         "class_weights": train_meta["class_weights"],
         "overall_accuracy": eval_metrics["accuracy"],
+        "balanced_accuracy": eval_metrics.get("balanced_accuracy", eval_metrics["accuracy"]),
         "macro_f1": eval_metrics["macro_f1"],
         "weighted_f1": eval_metrics["weighted_f1"],
         "baseline_accuracy": eval_metrics["baseline_accuracy"],
+        "baseline_balanced_accuracy": eval_metrics.get("baseline_balanced_accuracy", 0.3333),
         "baseline_macro_f1": eval_metrics["baseline_macro_f1"],
+        "use_smote": train_meta.get("use_smote", False),
+        "smote_info": train_meta.get("smote_info", {}),
+        "use_threshold_moving": train_meta.get("use_threshold_moving", True),
+        "decision_thresholds": train_meta.get("class_thresholds", {}),
         "class_distribution": train_meta["class_distribution"],
         "train_class_distribution": train_meta["train_class_distribution"],
         "test_class_distribution": train_meta["test_class_distribution"],
         "tfidf_parameters": {
-            "max_features": getattr(settings, "TFIDF_MAX_FEATURES", 5000),
-            "ngram_range": getattr(settings, "TFIDF_NGRAM_RANGE", (1, 2))
+            "max_features": getattr(settings, "TFIDF_MAX_FEATURES", 10000),
+            "ngram_range": getattr(settings, "TFIDF_NGRAM_RANGE", (1, 2)),
+            "sublinear_tf": getattr(settings, "TFIDF_SUBLINEAR_TF", False)
         },
         "svm_parameters": {
-            "C": getattr(settings, "SVM_C", 1.0),
-            "kernel": "linear"
+            "C": getattr(settings, "SVM_C", 0.2),
+            "kernel": "linear",
+            "class_weight": getattr(settings, "SVM_CLASS_WEIGHT", "balanced"),
+            "probability_calibrated": True
         },
         "threshold_configuration": {
             "min_reviews": getattr(settings, "MIN_REVIEWS", 10),

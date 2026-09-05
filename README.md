@@ -98,18 +98,19 @@ Aplikasi akan secara otomatis terbuka di peramban web Anda di alamat **`http://l
 
 ## 📊 Hasil Evaluasi Model SVM
 
-Kinerja pengklasifikasi teks Linear SVM pada Test Set (pembagian data 80:20):
-- **Akurasi Model**: **88.79%**
-- **Macro F1-Score**: **0.6132**
-- **Weighted F1-Score**: **0.8883**
+Kinerja pengklasifikasi teks Calibrated Linear SVM dengan Threshold Moving pada Test Set (pembagian data 80:20):
+- **Akurasi Model**: **89.96%**
+- **Balanced Accuracy**: **63.27%**
+- **Macro F1-Score**: **0.6329**
+- **Weighted F1-Score**: **0.8958**
 
 Laporan klasifikasi rinci per kelas sentimen:
 
 | Kelas Sentimen | Precision | Recall | F1-Score | Jumlah Sampel |
 | :--- | :---: | :---: | :---: | :---: |
-| **Negative (0)** | 0.6018 | 0.6387 | 0.6197 | 310 |
-| **Neutral (1)** | 0.2767 | 0.2683 | 0.2724 | 164 |
-| **Positive (2)** | 0.9496 | 0.9454 | 0.9475 | 3,111 |
+| **Negative (0)** | 0.6173 | 0.7129 | 0.6617 | 310 |
+| **Neutral (1)** | 0.3725 | 0.2317 | 0.2857 | 164 |
+| **Positive (2)** | 0.9491 | 0.9534 | 0.9513 | 3,111 |
 
 *Visualisasi Confusion Matrix untuk mengevaluasi bias model tersedia di berkas [`assets/confusion_matrix.png`](assets/confusion_matrix.png).*
 
