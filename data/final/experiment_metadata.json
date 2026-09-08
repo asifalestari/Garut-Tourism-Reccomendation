@@ -1,22 +1,20 @@
 {
-    "experiment_date": "2026-09-04T16:17:38.408963",
+    "experiment_date": "2026-09-07T17:43:14.502640",
     "dataset_size": 17923,
     "train_size": 14338,
     "test_size": 3585,
     "random_state": 42,
-    "class_weights": "balanced",
-    "overall_accuracy": 0.899581589958159,
-    "balanced_accuracy": 0.6326672451407377,
-    "macro_f1": 0.6328805780722986,
-    "weighted_f1": 0.8957651737025418,
+    "class_weights": null,
+    "overall_accuracy": 0.904323570432357,
+    "balanced_accuracy": 0.5050973622779436,
+    "macro_f1": 0.5406855008618064,
+    "weighted_f1": 0.8796313416422067,
     "baseline_accuracy": 0.8677824267782427,
     "baseline_balanced_accuracy": 0.3333333333333333,
     "baseline_macro_f1": 0.3097371565113501,
     "use_smote": false,
-    "smote_info": {
-        "applied": false
-    },
-    "use_threshold_moving": true,
+    "smote_info": {},
+    "use_threshold_moving": false,
     "decision_thresholds": {
         "0": 0.225,
         "1": 0.15,
@@ -48,8 +46,8 @@
     "svm_parameters": {
         "C": 0.2,
         "kernel": "linear",
-        "class_weight": "balanced",
-        "probability_calibrated": true
+        "class_weight": null,
+        "probability_calibrated": false
     },
     "threshold_configuration": {
         "min_reviews": 10,

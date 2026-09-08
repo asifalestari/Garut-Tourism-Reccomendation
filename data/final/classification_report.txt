@@ -1,20 +1,19 @@
-=== CALIBRATED LINEAR SVM CLASSIFICATION REPORT ===
-Configuration: SMOTE=False, Threshold Moving=True
-Decision Thresholds: {0: 0.225, 1: 0.15, 2: 0.625}
-Overall Accuracy   : 0.8996
-Balanced Accuracy  : 0.6327
-Macro F1-Score     : 0.6329
-Weighted F1-Score  : 0.8958
+=== LINEAR SVM CLASSIFICATION REPORT ===
+Configuration: SMOTE=False, Threshold Moving=False
+Overall Accuracy   : 0.9043
+Balanced Accuracy  : 0.5051
+Macro F1-Score     : 0.5407
+Weighted F1-Score  : 0.8796
 
               precision    recall  f1-score   support
 
-Negative (0)     0.6173    0.7129    0.6617       310
- Neutral (1)     0.3725    0.2317    0.2857       164
-Positive (2)     0.9491    0.9534    0.9513      3111
+Negative (0)     0.7641    0.4806    0.5901       310
+ Neutral (1)     0.8750    0.0427    0.0814       164
+Positive (2)     0.9125    0.9920    0.9506      3111
 
-    accuracy                         0.8996      3585
-   macro avg     0.6463    0.6327    0.6329      3585
-weighted avg     0.8941    0.8996    0.8958      3585
+    accuracy                         0.9043      3585
+   macro avg     0.8505    0.5051    0.5407      3585
+weighted avg     0.8979    0.9043    0.8796      3585
 
 
 === MAJORITY CLASS BASELINE ===

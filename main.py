@@ -6,8 +6,8 @@ import pandas as pd
 from config import settings
 from preprocessing.pipeline import run_preprocessing_pipeline
 from sentiment.labeling import apply_sentiment_labeling
-from sentiment.svm_model import train_svm_classifier
-from sentiment.evaluation import evaluate_classifier, run_error_analysis
+from sentiment.svm_model import train_svm_classifier, run_imbalance_experiments
+from sentiment.evaluation import evaluate_classifier, evaluate_imbalance_experiments, run_error_analysis
 from sentiment.prediction import predict_dataset_sentiment
 from policy.analysis import generate_policy_recommendations
 
@@ -134,10 +134,17 @@ def main():
     df_labeled[labeled_cols].to_csv(settings.FINAL_DATA_DIR / "labeled_reviews.csv", index=False)
     logger.info("Exported labeled_reviews.csv")
     
-    # Step 4: Model Training (Stratified, TF-IDF fit on Train only, multiclass SVM)
+    # Step 4a: Main Model Training (Stratified, TF-IDF fit on Train only, multiclass SVM)
     model, vectorizer, train_meta = train_svm_classifier(df_labeled)
     
-    # Step 5: Model Evaluation & Error Analysis (Strictly on Test set)
+    # Step 4b: Run 5 Imbalance Handling Skenario Experiments (Comparative Study)
+    logger.info("Executing comparative study on 5 imbalance handling scenarios...")
+    run_imbalance_experiments(df_labeled)
+    
+    # Step 5a: Evaluate Imbalance Experiments (Generates CSV comparison & Bar plot)
+    evaluate_imbalance_experiments()
+
+    # Step 5b: Main Model Evaluation & Error Analysis (Strictly on Test set)
     eval_metrics = evaluate_classifier(model, vectorizer, train_meta)
     run_error_analysis(model, vectorizer, df_labeled, train_meta)
     
@@ -165,7 +172,7 @@ def save_experiment_metadata(train_meta, eval_metrics):
         "train_size": train_meta["train_size"],
         "test_size": train_meta["test_size"],
         "random_state": 42,
-        "class_weights": train_meta["class_weights"],
+        "class_weights": train_meta.get("class_weights", None), # Disesuaikan
         "overall_accuracy": eval_metrics["accuracy"],
         "balanced_accuracy": eval_metrics.get("balanced_accuracy", eval_metrics["accuracy"]),
         "macro_f1": eval_metrics["macro_f1"],
@@ -175,7 +182,7 @@ def save_experiment_metadata(train_meta, eval_metrics):
         "baseline_macro_f1": eval_metrics["baseline_macro_f1"],
         "use_smote": train_meta.get("use_smote", False),
         "smote_info": train_meta.get("smote_info", {}),
-        "use_threshold_moving": train_meta.get("use_threshold_moving", True),
+        "use_threshold_moving": train_meta.get("use_threshold_moving", False),
         "decision_thresholds": train_meta.get("class_thresholds", {}),
         "class_distribution": train_meta["class_distribution"],
         "train_class_distribution": train_meta["train_class_distribution"],
@@ -188,8 +195,8 @@ def save_experiment_metadata(train_meta, eval_metrics):
         "svm_parameters": {
             "C": getattr(settings, "SVM_C", 0.2),
             "kernel": "linear",
-            "class_weight": getattr(settings, "SVM_CLASS_WEIGHT", "balanced"),
-            "probability_calibrated": True
+            "class_weight": getattr(settings, "SVM_CLASS_WEIGHT", None), # Disesuaikan
+            "probability_calibrated": False # Disesuaikan karena murni
         },
         "threshold_configuration": {
             "min_reviews": getattr(settings, "MIN_REVIEWS", 10),

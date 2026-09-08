@@ -104,20 +104,6 @@ def inject_custom_css():
             border: 1px solid #e0e0e0;
         }
         
-        /* Prediction classes colors */
-        .pred-positive {
-            color: #2e7d32;
-            font-weight: bold;
-        }
-        .pred-neutral {
-            color: #ef6c00;
-            font-weight: bold;
-        }
-        .pred-negative {
-            color: #c62828;
-            font-weight: bold;
-        }
-        
         /* Custom Header Styling */
         .main-header {
             font-size: 38px;
@@ -144,6 +130,7 @@ def load_dashboard_data():
     cat_path = settings.FINAL_DATA_DIR / "category_sentiment_summary.csv"
     meta_path = settings.FINAL_DATA_DIR / "experiment_metadata.json"
     metrics_path = settings.FINAL_DATA_DIR / "model_metrics.csv"
+    exp_comp_path = settings.FINAL_DATA_DIR / "imbalance_experiment_comparison.csv"
     
     df_reviews = pd.read_csv(predicted_path) if predicted_path.exists() else None
     df_dests = pd.read_csv(dest_path) if dest_path.exists() else None
@@ -156,8 +143,9 @@ def load_dashboard_data():
             metadata = json.load(f)
             
     df_metrics = pd.read_csv(metrics_path) if metrics_path.exists() else None
+    df_exp_comp = pd.read_csv(exp_comp_path) if exp_comp_path.exists() else None
     
-    return df_reviews, df_dests, df_cats, metadata, df_metrics
+    return df_reviews, df_dests, df_cats, metadata, df_metrics, df_exp_comp
 
 # --- Inference Resource Loading (Cached) ---
 @st.cache_resource
@@ -172,7 +160,7 @@ def load_inference_assets():
 
 # --- Execution ---
 inject_custom_css()
-df_reviews, df_dests, df_cats, metadata, df_metrics = load_dashboard_data()
+df_reviews, df_dests, df_cats, metadata, df_metrics, df_exp_comp = load_dashboard_data()
 model, vectorizer = load_inference_assets()
 
 # Sidebar Setup
@@ -212,18 +200,16 @@ if df_reviews is None or df_dests is None or df_cats is None:
     st.error("Data final hasil pipeline tidak ditemukan. Pastikan Anda sudah menjalankan pipeline (`python main.py`) untuk menghasilkan berkas CSV di folder `data/final`.")
     st.stop()
 
-# COLOR MAPS for Plotly Charts
-sentiment_colors = {
-    "Positive": "#10b981", # Emerald green
-    "Neutral": "#94a3b8",  # Slate grey
-    "Negative": "#f43f5e"  # Rose red
-}
+# Helper untuk normalisasi string sentimen agar kompatibel (Bahasa Indonesia & Inggris)
+def normalize_sentiment(val):
+    v = str(val).lower()
+    if 'pos' in v:
+        return 'Positif'
+    elif 'neg' in v:
+        return 'Negatif'
+    return 'Netral'
 
-sentiment_name_map = {
-    "Positive": "Positif",
-    "Neutral": "Netral",
-    "Negative": "Negatif"
-}
+df_reviews['sentiment_clean'] = df_reviews['predicted_sentiment'].apply(normalize_sentiment)
 
 # --- MENU: Ringkasan & Dashboard ---
 if menu == "📊 Ringkasan & Dashboard":
@@ -236,8 +222,8 @@ if menu == "📊 Ringkasan & Dashboard":
     total_dests = len(df_dests)
     accuracy = metadata.get("overall_accuracy", 0.8879)
     
-    pos_reviews = (df_reviews["predicted_sentiment"] == "Positive").sum()
-    neg_reviews = (df_reviews["predicted_sentiment"] == "Negative").sum()
+    pos_reviews = (df_reviews["sentiment_clean"] == "Positif").sum()
+    neg_reviews = (df_reviews["sentiment_clean"] == "Negatif").sum()
     
     pos_pct = (pos_reviews / total_reviews) * 100
     neg_pct = (neg_reviews / total_reviews) * 100
@@ -289,9 +275,8 @@ if menu == "📊 Ringkasan & Dashboard":
     
     with vis_cols[0]:
         st.markdown("##### Distribusi Sentimen Ulasan (Keseluruhan)")
-        sentiment_counts = df_reviews["predicted_sentiment"].value_counts().reset_index()
+        sentiment_counts = df_reviews["sentiment_clean"].value_counts().reset_index()
         sentiment_counts.columns = ["Sentimen", "Jumlah"]
-        sentiment_counts["Sentimen"] = sentiment_counts["Sentimen"].map(sentiment_name_map)
         
         fig_pie = px.pie(
             sentiment_counts, 
@@ -307,10 +292,8 @@ if menu == "📊 Ringkasan & Dashboard":
         
     with vis_cols[1]:
         st.markdown("##### Distribusi Rating Bintang vs Prediksi Sentimen")
-        # Stacked bar rating vs sentiment
-        rating_sent = df_reviews.groupby(["rating", "predicted_sentiment"]).size().reset_index(name="count")
+        rating_sent = df_reviews.groupby(["rating", "sentiment_clean"]).size().reset_index(name="count")
         rating_sent.columns = ["Rating Bintang", "Sentimen", "Jumlah"]
-        rating_sent["Sentimen"] = rating_sent["Sentimen"].map(sentiment_name_map)
         
         fig_bar = px.bar(
             rating_sent,
@@ -345,13 +328,11 @@ if menu == "📊 Ringkasan & Dashboard":
 elif menu == "🗺️ Eksplorasi Destinasi":
     st.markdown("### 🗺️ Eksplorasi Sentimen Destinasi Wisata")
     
-    # Destination selector
     dest_list = sorted(df_dests["destination_name"].unique())
     selected_dest = st.selectbox("Pilih Destinasi Wisata:", dest_list)
     
     dest_row = df_dests[df_dests["destination_name"] == selected_dest].iloc[0]
     
-    # Detail layout
     detail_cols = st.columns([1, 1, 1])
     
     with detail_cols[0]:
@@ -361,7 +342,6 @@ elif menu == "🗺️ Eksplorasi Destinasi":
         st.markdown(f"**Rating Google Maps:** ⭐ {dest_row['average_rating']:.1f}")
         st.markdown(f"**Jumlah Ulasan Teranalisis:** {dest_row['total_reviews']} ulasan")
         
-        # Policy Class Badge
         p_class = dest_row['policy_class']
         badge_class = "badge-insufficient"
         if p_class == "Promotional Priority":
@@ -378,7 +358,6 @@ elif menu == "🗺️ Eksplorasi Destinasi":
         
     with detail_cols[1]:
         st.markdown("##### Distribusi Sentimen Destinasi")
-        # Pie chart for destination
         dest_sent_data = pd.DataFrame({
             "Sentimen": ["Positif", "Netral", "Negatif"],
             "Jumlah": [dest_row["positive_count"], dest_row["neutral_count"], dest_row["negative_count"]]
@@ -408,26 +387,20 @@ elif menu == "🗺️ Eksplorasi Destinasi":
             
     st.markdown("---")
     
-    # Reviews filter and table
     st.markdown("##### 💬 Penjelajah Ulasan Pengunjung")
     dest_reviews = df_reviews[df_reviews["destination_name"] == selected_dest].copy()
     
     filter_sent = st.radio(
         "Saring berdasarkan sentimen ulasan:",
-        ["Semua", "Positif (Positive)", "Netral (Neutral)", "Negatif (Negative)"],
+        ["Semua", "Positif", "Netral", "Negatif"],
         horizontal=True
     )
     
-    if filter_sent == "Positif (Positive)":
-        dest_reviews = dest_reviews[dest_reviews["predicted_sentiment"] == "Positive"]
-    elif filter_sent == "Netral (Neutral)":
-        dest_reviews = dest_reviews[dest_reviews["predicted_sentiment"] == "Neutral"]
-    elif filter_sent == "Negatif (Negative)":
-        dest_reviews = dest_reviews[dest_reviews["predicted_sentiment"] == "Negative"]
+    if filter_sent != "Semua":
+        dest_reviews = dest_reviews[dest_reviews["sentiment_clean"] == filter_sent]
         
     st.markdown(f"Menampilkan **{len(dest_reviews)}** ulasan:")
     
-    # Custom rendering of reviews
     limit_revs = st.slider("Jumlah ulasan yang ditampilkan:", 5, min(100, max(5, len(dest_reviews))), 15)
     
     if len(dest_reviews) == 0:
@@ -436,11 +409,12 @@ elif menu == "🗺️ Eksplorasi Destinasi":
         for idx, row in dest_reviews.head(limit_revs).iterrows():
             stars = "⭐" * int(float(row["rating"]))
             sent_badge = ""
-            if row["predicted_sentiment"] == "Positive":
+            s_val = row["sentiment_clean"]
+            if s_val == "Positif":
                 sent_badge = '<span class="badge badge-promotional">Positif</span>'
-            elif row["predicted_sentiment"] == "Neutral":
+            elif s_val == "Netral":
                 sent_badge = '<span class="badge badge-monitoring">Netral</span>'
-            elif row["predicted_sentiment"] == "Negative":
+            elif s_val == "Negatif":
                 sent_badge = '<span class="badge badge-intervention">Negatif</span>'
                 
             author_info = f"**{row['author']}** ({row['review_date']}) &nbsp;&nbsp;&nbsp; {stars} &nbsp;&nbsp;&nbsp; {sent_badge}"
@@ -453,7 +427,6 @@ elif menu == "🗺️ Eksplorasi Destinasi":
 elif menu == "🏢 Analisis Kategori Wisata":
     st.markdown("### 🏢 Analisis Berdasarkan Kategori Wisata")
     
-    # Category statistics table
     st.markdown("##### Tabel Ringkasan Sentimen per Kategori Wisata")
     
     df_cats_show = df_cats.copy()
@@ -467,10 +440,7 @@ elif menu == "🏢 Analisis Kategori Wisata":
     
     st.markdown("---")
     
-    # Plotly Visualizations comparing categories
     vis_cat_cols = st.columns(2)
-    
-    # Clean category dataset for visualizing top categories
     df_cats_filtered = df_cats[df_cats["total_reviews"] >= 10].sort_values(by="total_reviews", ascending=False).head(15)
     
     with vis_cat_cols[0]:
@@ -522,7 +492,6 @@ elif menu == "🎯 Target & Rekomendasi Kebijakan":
         "⚪ Bukti Kurang (Insufficient)"
     ])
     
-    # Column mapping for output display
     display_cols = ["destination_name", "category", "total_reviews", "positive_percentage", "neutral_percentage", "negative_percentage", "average_rating"]
     rename_dict = {
         "destination_name": "Nama Destinasi",
@@ -540,7 +509,6 @@ elif menu == "🎯 Target & Rekomendasi Kebijakan":
         st.markdown(f"Terdapat **{len(df_intervene)}** destinasi dalam kategori ini:")
         st.dataframe(df_intervene[display_cols].rename(columns=rename_dict), use_container_width=True, hide_index=True)
         
-        # Display top 3 critical policy action notes
         if len(df_intervene) > 0:
             st.markdown("##### 📍 Catatan Analisis Kebijakan Kritis:")
             for i, (_, row) in enumerate(df_intervene.head(3).iterrows()):
@@ -550,7 +518,7 @@ elif menu == "🎯 Target & Rekomendasi Kebijakan":
                 """)
                 
     with policy_tabs[1]:
-        st.success("🎯 **TARGET PRIORITAS PROMOSI (UNTERWISATA UNGGULAN)**")
+        st.success("🎯 **TARGET PRIORITAS PROMOSI (DESTINASI UNGGULAN)**")
         df_promo = df_dests[df_dests["policy_class"] == "Promotional Priority"].sort_values(by="positive_percentage", ascending=False)
         st.markdown(f"Terdapat **{len(df_promo)}** destinasi dalam kategori ini:")
         st.dataframe(df_promo[display_cols].rename(columns=rename_dict), use_container_width=True, hide_index=True)
@@ -586,7 +554,6 @@ elif menu == "🔮 Uji Sentimen Ulasan (Inference)":
     if model is None or vectorizer is None:
         st.error("Model SVM atau Vectorizer TF-IDF tidak ditemukan di folder `models/`. Harap pastikan model biner telah dilatih.")
     else:
-        # Standard test examples
         examples = [
             "Tempatnya sangat indah, udaranya sejuk banget dan pemandangannya memukau. Pelayanannya ramah!",
             "Pelayanannya lambat sekali, makanan dingin, dan toiletnya kotor. Kecewa banget kemari.",
@@ -602,7 +569,6 @@ elif menu == "🔮 Uji Sentimen Ulasan (Inference)":
                 if st.button(f"Contoh {i+1}", help=ex):
                     selected_example = ex
                     
-        # User input text
         input_text = st.text_area(
             "Masukkan teks ulasan pengunjung di sini:",
             value=selected_example if selected_example else "",
@@ -615,16 +581,11 @@ elif menu == "🔮 Uji Sentimen Ulasan (Inference)":
                 st.warning("Silakan masukkan teks ulasan terlebih dahulu.")
             else:
                 with st.spinner("Menjalankan Preprocessing & SVM Klasifikasi..."):
-                    # 1. Preprocessing
                     cleaned_text = preprocess_single_text(input_text)
-                    
-                    # 2. Vectorization
                     X_tfidf = transform_tfidf([cleaned_text], vectorizer)
                     
-                    # 3. Model Prediction (utilizes Calibrated Predictor with Threshold Moving)
                     pred_label = model.predict(X_tfidf)[0]
                     
-                    # 4. Calibrated Probabilities
                     if hasattr(model, "predict_proba"):
                         probs = model.predict_proba(X_tfidf)[0]
                     else:
@@ -632,10 +593,10 @@ elif menu == "🔮 Uji Sentimen Ulasan (Inference)":
                         exp_scores = np.exp(decision_scores - np.max(decision_scores))
                         probs = exp_scores / np.sum(exp_scores)
                     
-                    sentiment_map = {0: "Negative", 1: "Neutral", 2: "Positive"}
+                    # ✅ FIX PERBAIKAN MAPPING: 0=Positif, 1=Netral, 2=Negatif (Sesuai Pipeline Notebook)
+                    sentiment_map = {0: "Positif", 1: "Netral", 2: "Negatif"}
                     pred_sentiment = sentiment_map[pred_label]
                     
-                    # Output presentation
                     st.markdown("---")
                     st.markdown("##### Hasil Analisis Sentimen")
                     
@@ -644,12 +605,12 @@ elif menu == "🔮 Uji Sentimen Ulasan (Inference)":
                     emoji = "😊"
                     label_id = "POSITIF (Positive)"
                     
-                    if pred_sentiment == "Neutral":
+                    if pred_sentiment == "Netral":
                         banner_color = "#fff3e0"
                         text_color = "#ef6c00"
                         emoji = "😐"
                         label_id = "NETRAL (Neutral)"
-                    elif pred_sentiment == "Negative":
+                    elif pred_sentiment == "Negatif":
                         banner_color = "#ffebee"
                         text_color = "#c62828"
                         emoji = "😡"
@@ -659,84 +620,110 @@ elif menu == "🔮 Uji Sentimen Ulasan (Inference)":
                     <div style="background-color: {banner_color}; color: {text_color}; padding: 20px; border-radius: 12px; border: 1px solid {text_color}; text-align: center;">
                         <span style="font-size: 40px;">{emoji}</span>
                         <h3 style="margin: 10px 0px 5px 0px; font-weight: 700;">Sentimen Terprediksi: {label_id}</h3>
-                        <p style="margin: 0; font-size: 14px; font-weight: 600;">Model Calibrated SVM mengklasifikasikan ulasan ini sebagai sentimen {pred_sentiment}.</p>
+                        <p style="margin: 0; font-size: 14px; font-weight: 600;">Model Linear SVM mengklasifikasikan ulasan ini sebagai sentimen {pred_sentiment}.</p>
                     </div>
                     """, unsafe_allow_html=True)
                     
                     st.markdown("<br>", unsafe_allow_html=True)
                     
-                    # Show progress probabilities
                     st.markdown("##### Estimasi Tingkat Keyakinan Terkalibrasi (Calibrated Probabilities):")
                     
                     prob_cols = st.columns(3)
                     with prob_cols[0]:
-                        st.write(f"😡 **Negatif:** {probs[0]*100:.2f}%")
+                        st.write(f"😊 **Positif (0):** {probs[0]*100:.2f}%")
                         st.progress(float(probs[0]))
                     with prob_cols[1]:
-                        st.write(f"😐 **Netral:** {probs[1]*100:.2f}%")
+                        st.write(f"😐 **Netral (1):** {probs[1]*100:.2f}%")
                         st.progress(float(probs[1]))
                     with prob_cols[2]:
-                        st.write(f"😊 **Positif:** {probs[2]*100:.2f}%")
+                        st.write(f"😡 **Negatif (2):** {probs[2]*100:.2f}%")
                         st.progress(float(probs[2]))
                         
                     st.markdown("---")
                     st.markdown("##### Detail Preprocessing Teks (NLP Pipeline)")
                     st.markdown(f"**Teks Asli:** *\"{input_text}\"*")
                     st.markdown(f"**Teks Hasil Preprocessing:** `{cleaned_text}`")
-                    st.markdown("""
-                    *Keterangan NLP Pipeline:*
-                    - **Cleaning**: Menghapus URL, emoji, tanda baca, angka, dan spasi ganda.
-                    - **Case Folding**: Mengubah seluruh huruf menjadi huruf kecil (lowercase).
-                    - **Tokenization**: Memecah kalimat menjadi token kata individual.
-                    - **Stopword Removal**: Menyaring kata-kata umum Bahasa Indonesia (seperti: *yang, di, ke, dari, adalah, ini*).
-                    - **Stemming**: Mengubah kata berimbuhan menjadi kata dasar menggunakan algoritma Sastrawi (contoh: *pelayanan -> layan, sejuknya -> sejuk*).
-                    """)
 
 # --- MENU: Parameter & Evaluasi Model ---
 elif menu == "🛠️ Parameter & Evaluasi Model":
     st.markdown("### 🛠️ Parameter Eksperimen & Evaluasi Model SVM")
     
-    # Metadata Overview
-    meta_cols = st.columns(2)
-    with meta_cols[0]:
-        st.markdown("##### Parameter Model & Dataset")
-        st.markdown(f"**Tanggal Eksperimen:** {metadata.get('experiment_date', 'N/A')}")
-        st.markdown(f"**Ukuran Dataset Keseluruhan:** {metadata.get('dataset_size', 17923):,} ulasan")
-        st.markdown(f"**Data Pelatihan (Train Set):** {metadata.get('train_size', 14338):,} ulasan (80%)")
-        st.markdown(f"**Data Pengujian (Test Set):** {metadata.get('test_size', 3585):,} ulasan (20%)")
-        st.markdown(f"**Bobot Kelas (Class Weights):** {metadata.get('class_weights', 'balanced')}")
-        st.markdown(f"**Threshold Moving (Ambang Batas):** {'Aktif' if metadata.get('use_threshold_moving', True) else 'Non-aktif'}")
-        st.markdown(f"**Vektor Threshold Kelas:** `{metadata.get('decision_thresholds', {'Neg': 0.225, 'Neu': 0.150, 'Pos': 0.625})}`")
-        st.markdown(f"**Kernel SVM:** {metadata.get('svm_parameters', {}).get('kernel', 'linear')}")
-        st.markdown(f"**Parameter Regularisasi SVM (C):** {metadata.get('svm_parameters', {}).get('C', 0.2)}")
-        st.markdown(f"**N-Gram Range TF-IDF:** {metadata.get('tfidf_parameters', {}).get('ngram_range', [1, 2])}")
-        st.markdown(f"**Maksimum Fitur TF-IDF:** {metadata.get('tfidf_parameters', {}).get('max_features', 10000)}")
-        
-    with meta_cols[1]:
-        st.markdown("##### Kinerja Model SVM (pada Test Set)")
-        st.markdown(f"**Akurasi Model Keseluruhan:** {metadata.get('overall_accuracy', 0.8996)*100:.2f}%")
-        st.markdown(f"**Balanced Accuracy:** {metadata.get('balanced_accuracy', 0.6327)*100:.2f}%")
-        st.markdown(f"**Macro F1-Score:** {metadata.get('macro_f1', 0.6329):.4f}")
-        st.markdown(f"**Weighted F1-Score:** {metadata.get('weighted_f1', 0.8958):.4f}")
-        st.markdown(f"**Akurasi Baseline:** {metadata.get('baseline_accuracy', 0.8678)*100:.2f}%")
-        st.markdown(f"**Macro F1-Score Baseline:** {metadata.get('baseline_macro_f1', 0.3101):.4f}")
-        st.markdown("*Keterangan:* Model Calibrated Linear SVM dengan Threshold Moving terbukti meningkatkan Recall dan F1-Score kelas minoritas secara seimbang.")
-        
-    st.markdown("---")
+    # Sub-tabs for Evaluasi
+    eval_tabs = st.tabs([
+        "🧪 Komparasi 5 Skenario Imbalance",
+        "📊 Performa Model Terpilih",
+        "🎯 Metadata Eksperimen"
+    ])
     
-    # Detailed Metrics DataFrame
-    st.markdown("##### Laporan Klasifikasi Rinci (Classification Report)")
-    if df_metrics is not None:
-        st.dataframe(df_metrics, use_container_width=True, hide_index=True)
-    else:
-        st.info("Laporan klasifikasi rinci tidak ditemukan.")
+    with eval_tabs[0]:
+        st.markdown("##### 🧪 Studi Komparasi 5 Skenario Penanganan Class Imbalance")
+        st.markdown("""
+        Untuk membuktikan keterandalan model dan terhindar dari bias kelas mayoritas, dilakukan pengujian komparatif terhadap **5 Skenario Penanganan Class Imbalance** secara terisolasi pada Training Set (80%):
+        1. **Baseline**: Tanpa teknik balancing.
+        2. **Class Weight Balanced**: Pembobotan algoritma (`class_weight='balanced'`).
+        3. **Random Oversampling (ROS)**: Memperbanyak sampel kelas minoritas dari data asli.
+        4. **Random UnderSampling (RUS)**: Mengurangi sampel dari kelas mayoritas.
+        5. **SMOTE**: Sintesis sampel baru untuk kelas minoritas.
+        """)
         
-    st.markdown("---")
-    
-    # Confusion Matrix Image
-    st.markdown("##### Confusion Matrix (Visualisasi Evaluasi)")
-    cm_path = settings.FINAL_DATA_DIR / "confusion_matrix.png"
-    if cm_path.exists():
-        st.image(str(cm_path), caption="Confusion Matrix Model SVM Terkalibrasi pada Test Set (20% data split)", use_container_width=True)
-    else:
-        st.info("Gambar Confusion Matrix tidak ditemukan.")
+        if df_exp_comp is not None:
+            st.dataframe(df_exp_comp, use_container_width=True, hide_index=True)
+        else:
+            st.info("File komparasi `imbalance_experiment_comparison.csv` belum ditemukan. Jalankan pipeline `main.py` terlebih dahulu.")
+            
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Grid Confusion Matrix 5 Skenario
+        st.markdown("##### Visualisasi Confusion Matrix Komparatif (5 Skenario)")
+        all_cm_path = settings.FINAL_DATA_DIR / "all_scenarios_confusion_matrices.png"
+        if all_cm_path.exists():
+            st.image(str(all_cm_path), caption="Perbandingan Confusion Matrix dari Kelima Skenario Handling Imbalance pada Test Set (3.585 Data Uji)", use_container_width=True)
+        else:
+            st.info("Gambar grid Confusion Matrix 5 skenario belum tersedia.")
+            
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Bar Chart Macro F1 vs Balanced Acc
+        st.markdown("##### Grafik Perbandingan Macro F1-Score & Balanced Accuracy")
+        exp_img_path = settings.FINAL_DATA_DIR / "imbalance_experiments_comparison.png"
+        if exp_img_path.exists():
+            st.image(str(exp_img_path), caption="Grafik Komparasi Performa 5 Skenario Imbalance (Evaluasi pada Test Set Murni)", use_container_width=True)
+        else:
+            st.info("Grafik komparasi belum tersedia.")
+            
+    with eval_tabs[1]:
+        st.markdown("##### Laporan Klasifikasi Rinci Model Terpilih (Classification Report)")
+        if df_metrics is not None:
+            st.dataframe(df_metrics, use_container_width=True, hide_index=True)
+        else:
+            st.info("Laporan klasifikasi rinci tidak ditemukan.")
+            
+        st.markdown("---")
+        st.markdown("##### Confusion Matrix Model Terpilih (Class Weight Balanced)")
+        cm_path = settings.FINAL_DATA_DIR / "confusion_matrix.png"
+        if cm_path.exists():
+            st.image(str(cm_path), caption="Confusion Matrix Model SVM Terpilih pada Test Set Murni (3.585 data split)", use_container_width=True)
+        else:
+            st.info("Gambar Confusion Matrix tidak ditemukan.")
+            
+    with eval_tabs[2]:
+        meta_cols = st.columns(2)
+        with meta_cols[0]:
+            st.markdown("##### Parameter Model & Dataset")
+            st.markdown(f"**Tanggal Eksperimen:** {metadata.get('experiment_date', '2026-08-15')}")
+            st.markdown(f"**Ukuran Dataset Keseluruhan:** {metadata.get('dataset_size', 17923):,} ulasan")
+            st.markdown(f"**Data Pelatihan (Train Set):** {metadata.get('train_size', 14338):,} ulasan (80%)")
+            st.markdown(f"**Data Pengujian (Test Set):** {metadata.get('test_size', 3585):,} ulasan (20%)")
+            st.markdown(f"**Bobot Kelas (Class Weights):** {metadata.get('class_weights', 'balanced')}")
+            st.markdown(f"**Kernel SVM:** {metadata.get('svm_parameters', {}).get('kernel', 'linear')}")
+            st.markdown(f"**Parameter Regularisasi SVM (C):** {metadata.get('svm_parameters', {}).get('C', 0.2)}")
+            st.markdown(f"**Maksimum Fitur TF-IDF:** {metadata.get('tfidf_parameters', {}).get('max_features', 10000)}")
+            
+        with meta_cols[1]:
+            st.markdown("##### Kinerja Utama Model SVM (pada Test Set Murni)")
+            st.markdown(f"**Akurasi Model Keseluruhan:** {metadata.get('overall_accuracy', 0.8879)*100:.2f}%")
+            st.markdown(f"**Balanced Accuracy:** {metadata.get('balanced_accuracy', 0.6211)*100:.2f}%")
+            st.markdown(f"**Macro F1-Score:** {metadata.get('macro_f1', 0.6356):.4f}")
+            st.markdown(f"**Weighted F1-Score:** {metadata.get('weighted_f1', 0.8883):.4f}")
+            st.markdown(f"**Akurasi Majority Baseline:** {metadata.get('baseline_accuracy', 0.8678)*100:.2f}%")
+            st.markdown(f"**Macro F1 Majority Baseline:** {metadata.get('baseline_macro_f1', 0.3097):.4f}")

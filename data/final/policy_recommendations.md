@@ -22,14 +22,14 @@ Distribusi rating ulasan individu (*Individual Review Rating*) dari seluruh data
 
 ## 3. Distribusi Sentimen
 Distribusi prediksi sentimen keseluruhan ulasan pariwisata:
-- **Positive (2):** 15,392 ulasan (85.88%)
-- **Neutral (1):** 872 ulasan (4.87%)
-- **Negative (0):** 1,659 ulasan (9.26%)
+- **Positive (2):** 16,700 ulasan (93.18%)
+- **Neutral (1):** 117 ulasan (0.65%)
+- **Negative (0):** 1,106 ulasan (6.17%)
 
 ## 4. Evaluasi Model SVM
 Kinerja pengklasifikasi teks Linear SVM pada Test Set (20% split):
-- **Akurasi Model:** 89.96%
-- **Macro F1-Score:** 0.6329
+- **Akurasi Model:** 90.43%
+- **Macro F1-Score:** 0.5407
 - *Catatan:* Perincian presisi, recall, dan confusion matrix tersimpan di berkas biner/gambar laporan.
 
 ## 5. Analisis Sentimen per Destinasi
@@ -37,21 +37,21 @@ Daftar destinasi dengan akumulasi sentimen ulasan (menampilkan destinasi pariwis
 
 | Nama Destinasi | Total Ulasan | Positif (%) | Netral (%) | Negatif (%) | Avg Rating |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| Kampung Muara Sunda | 402 | 66.17% | 3.48% | 30.35% | 4.2 |
-| Ramenkane Cikuray Garut | 398 | 98.74% | 0.5% | 0.75% | 4.9 |
-| RM Saung Cikenceh (Garut Kota, Cikuray) | 383 | 93.99% | 1.31% | 4.7% | 4.7 |
-| Bumi Upi | 375 | 82.67% | 7.47% | 9.87% | 4.5 |
-| Joglo Abah Resto, Kedai Kopi dan Pusat Oleh-oleh | 370 | 96.76% | 0.81% | 2.43% | 4.9 |
-| Garland Barnville | 350 | 83.14% | 4.0% | 12.86% | 4.4 |
-| Botram Garut | 349 | 87.39% | 4.3% | 8.31% | 4.6 |
-| Glamping Villa by Sabda Alam | 333 | 96.4% | 1.8% | 1.8% | 4.9 |
-| Rumah Makan Lumbung Padi Garut | 311 | 82.64% | 4.18% | 13.18% | 4.5 |
-| Ramen Gorilla | 311 | 93.57% | 1.61% | 4.82% | 4.4 |
-| Rumah Makan Sunda - Dapoer Nyunda | 310 | 97.74% | 0.65% | 1.61% | 5.0 |
-| Kebun Mawar SITUHAPA Samarang | 304 | 90.46% | 3.62% | 5.92% | 4.5 |
-| Gunung Papandayan Garut | 304 | 93.42% | 1.97% | 4.61% | 4.7 |
-| Rumah Makan Khas Sunda M. Iki | 296 | 82.77% | 8.45% | 8.78% | 4.5 |
-| RM Sugema Raya | 293 | 81.91% | 8.87% | 9.22% | 4.5 |
+| Kampung Muara Sunda | 402 | 75.62% | 0.25% | 24.13% | 4.2 |
+| Ramenkane Cikuray Garut | 398 | 99.5% | 0.0% | 0.5% | 4.9 |
+| RM Saung Cikenceh (Garut Kota, Cikuray) | 383 | 96.34% | 0.26% | 3.39% | 4.7 |
+| Bumi Upi | 375 | 92.8% | 1.33% | 5.87% | 4.5 |
+| Joglo Abah Resto, Kedai Kopi dan Pusat Oleh-oleh | 370 | 97.57% | 0.27% | 2.16% | 4.9 |
+| Garland Barnville | 350 | 91.43% | 0.57% | 8.0% | 4.4 |
+| Botram Garut | 349 | 93.12% | 0.57% | 6.3% | 4.6 |
+| Glamping Villa by Sabda Alam | 333 | 98.8% | 0.0% | 1.2% | 4.9 |
+| Rumah Makan Lumbung Padi Garut | 311 | 91.96% | 0.64% | 7.4% | 4.5 |
+| Ramen Gorilla | 311 | 97.11% | 0.32% | 2.57% | 4.4 |
+| Rumah Makan Sunda - Dapoer Nyunda | 310 | 99.35% | 0.0% | 0.65% | 5.0 |
+| Kebun Mawar SITUHAPA Samarang | 304 | 95.39% | 0.0% | 4.61% | 4.5 |
+| Gunung Papandayan Garut | 304 | 97.37% | 0.0% | 2.63% | 4.7 |
+| Rumah Makan Khas Sunda M. Iki | 296 | 94.26% | 0.34% | 5.41% | 4.5 |
+| RM Sugema Raya | 293 | 92.83% | 0.34% | 6.83% | 4.5 |
 
 ## 6. Analisis Sentimen Berdasarkan Kategori
 Agregasi distribusi sentimen berdasarkan jenis/kategori destinasi wisata di Kabupaten Garut:
@@ -59,58 +59,58 @@ Agregasi distribusi sentimen berdasarkan jenis/kategori destinasi wisata di Kabu
 | Kategori Wisata | Jumlah Destinasi | Total Ulasan | Positif (%) | Netral (%) | Negatif (%) | Avg Rating |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | Area Mendaki | 2 | 26 | 92.31% | 3.85% | 3.85% | 4.65 |
-| Area Rekreasi Alam | 2 | 2 | 50.0% | 50.0% | 0.0% | 4.85 |
+| Area Rekreasi Alam | 2 | 2 | 100.0% | 0.0% | 0.0% | 4.85 |
 | Bangunan Bersejarah | 1 | 1 | 100.0% | 0.0% | 0.0% | 4.6 |
 | Cagar Alam | 2 | 8 | 100.0% | 0.0% | 0.0% | 4.6 |
 | Danau | 1 | 3 | 66.67% | 0.0% | 33.33% | 4.4 |
-| Danau, Tujuan Wisata | 1 | 110 | 66.36% | 15.45% | 18.18% | 4.25 |
-| Hotel | 4 | 114 | 87.72% | 5.26% | 7.02% | 3.2 |
-| Hotel Resor | 1 | 3 | 33.33% | 66.67% | 0.0% | 4.5 |
-| Kafe | 3 | 299 | 81.27% | 6.35% | 12.37% | 4.57 |
-| Kebun Binatang | 1 | 169 | 88.17% | 4.14% | 7.69% | 4.3 |
-| Kedai Sarapan & Makan Siang | 1 | 264 | 81.06% | 7.95% | 10.98% | 4.3 |
-| Kolam Renang | 8 | 499 | 82.36% | 4.81% | 12.83% | 4.4 |
-| Kolam Renang Umum | 2 | 138 | 81.16% | 7.97% | 10.87% | 4.5 |
-| Kolam renang luar ruangan | 1 | 24 | 58.33% | 4.17% | 37.5% | 4.3 |
-| Kompleks Kolam Renang | 1 | 194 | 74.23% | 8.25% | 17.53% | 4.2 |
-| Layanan Sewa Tenda | 1 | 3 | 66.67% | 33.33% | 0.0% | 4.2 |
-| Masjid | 1 | 137 | 72.99% | 11.68% | 15.33% | 4.7 |
-| Otoritas Pelabuhan | 1 | 2 | 50.0% | 50.0% | 0.0% | 4.8 |
-| Pantai | 15 | 1,166 | 81.48% | 5.57% | 12.95% | 4.37 |
-| Pantai, Tujuan Wisata | 1 | 14 | 85.71% | 7.14% | 7.14% | 4.5 |
-| Pasar Malam | 1 | 75 | 85.33% | 5.33% | 9.33% | 4.5 |
+| Danau, Tujuan Wisata | 1 | 110 | 73.64% | 10.0% | 16.36% | 4.25 |
+| Hotel | 4 | 114 | 94.74% | 0.0% | 5.26% | 3.2 |
+| Hotel Resor | 1 | 3 | 100.0% | 0.0% | 0.0% | 4.5 |
+| Kafe | 3 | 299 | 90.3% | 1.34% | 8.36% | 4.57 |
+| Kebun Binatang | 1 | 169 | 97.04% | 0.0% | 2.96% | 4.3 |
+| Kedai Sarapan & Makan Siang | 1 | 264 | 94.7% | 0.38% | 4.92% | 4.3 |
+| Kolam Renang | 8 | 499 | 91.58% | 0.0% | 8.42% | 4.4 |
+| Kolam Renang Umum | 2 | 138 | 92.03% | 0.72% | 7.25% | 4.5 |
+| Kolam renang luar ruangan | 1 | 24 | 87.5% | 0.0% | 12.5% | 4.3 |
+| Kompleks Kolam Renang | 1 | 194 | 90.72% | 0.52% | 8.76% | 4.2 |
+| Layanan Sewa Tenda | 1 | 3 | 100.0% | 0.0% | 0.0% | 4.2 |
+| Masjid | 1 | 137 | 91.97% | 2.19% | 5.84% | 4.7 |
+| Otoritas Pelabuhan | 1 | 2 | 100.0% | 0.0% | 0.0% | 4.8 |
+| Pantai | 15 | 1,166 | 88.51% | 1.46% | 10.03% | 4.37 |
+| Pantai, Tujuan Wisata | 1 | 14 | 100.0% | 0.0% | 0.0% | 4.5 |
+| Pasar Malam | 1 | 75 | 90.67% | 0.0% | 9.33% | 4.5 |
 | Pemandian Umum | 1 | 3 | 100.0% | 0.0% | 0.0% | 4.9 |
 | Pemandian air panas | 1 | 16 | 93.75% | 6.25% | 0.0% | 4.8 |
 | Pemandian di Ruang Terbuka | 3 | 11 | 100.0% | 0.0% | 0.0% | 4.3 |
 | Pondok | 2 | 8 | 100.0% | 0.0% | 0.0% | 4.35 |
-| Produsen makanan | 1 | 11 | 81.82% | 0.0% | 18.18% | 4.4 |
-| Pujasera | 2 | 19 | 73.68% | 15.79% | 10.53% | 4.5 |
+| Produsen makanan | 1 | 11 | 90.91% | 0.0% | 9.09% | 4.4 |
+| Pujasera | 2 | 19 | 100.0% | 0.0% | 0.0% | 4.5 |
 | Pusat Informasi Pariwisata | 1 | 4 | 100.0% | 0.0% | 0.0% | 5.0 |
-| Restoran | 15 | 2,283 | 88.66% | 2.8% | 8.54% | 4.61 |
-| Restoran Bakso | 3 | 90 | 81.11% | 5.56% | 13.33% | 4.57 |
-| Restoran Indonesia | 3 | 468 | 82.05% | 7.48% | 10.47% | 4.57 |
-| Restoran Jepang | 1 | 311 | 93.57% | 1.61% | 4.82% | 4.4 |
-| Restoran Korea | 2 | 358 | 89.94% | 1.4% | 8.66% | 4.6 |
-| Restoran Masakan Ayam | 1 | 26 | 88.46% | 3.85% | 7.69% | 4.3 |
-| Restoran Mie | 1 | 398 | 98.74% | 0.5% | 0.75% | 4.9 |
-| Restoran Sate | 2 | 102 | 86.27% | 2.94% | 10.78% | 4.5 |
-| Restoran Seafood | 1 | 31 | 41.94% | 6.45% | 51.61% | 4.2 |
-| Restoran Steak | 1 | 112 | 79.46% | 3.57% | 16.96% | 4.4 |
-| Restoran Sunda | 12 | 2,139 | 80.27% | 5.05% | 14.68% | 4.41 |
-| Restoran makanan pedesaan | 1 | 19 | 73.68% | 0.0% | 26.32% | 4.1 |
-| Rumah Makan | 1 | 349 | 87.39% | 4.3% | 8.31% | 4.6 |
+| Restoran | 15 | 2,283 | 94.17% | 0.31% | 5.52% | 4.61 |
+| Restoran Bakso | 3 | 90 | 91.11% | 1.11% | 7.78% | 4.57 |
+| Restoran Indonesia | 3 | 468 | 92.52% | 1.07% | 6.41% | 4.57 |
+| Restoran Jepang | 1 | 311 | 97.11% | 0.32% | 2.57% | 4.4 |
+| Restoran Korea | 2 | 358 | 94.41% | 0.0% | 5.59% | 4.6 |
+| Restoran Masakan Ayam | 1 | 26 | 92.31% | 0.0% | 7.69% | 4.3 |
+| Restoran Mie | 1 | 398 | 99.5% | 0.0% | 0.5% | 4.9 |
+| Restoran Sate | 2 | 102 | 94.12% | 0.0% | 5.88% | 4.5 |
+| Restoran Seafood | 1 | 31 | 58.06% | 0.0% | 41.94% | 4.2 |
+| Restoran Steak | 1 | 112 | 88.39% | 0.0% | 11.61% | 4.4 |
+| Restoran Sunda | 12 | 2,139 | 88.41% | 0.28% | 11.31% | 4.41 |
+| Restoran makanan pedesaan | 1 | 19 | 84.21% | 0.0% | 15.79% | 4.1 |
+| Rumah Makan | 1 | 349 | 93.12% | 0.57% | 6.3% | 4.6 |
 | Rumah Pondokan | 1 | 1 | 100.0% | 0.0% | 0.0% | 4.3 |
-| Spa | 1 | 18 | 83.33% | 16.67% | 0.0% | 4.4 |
-| Taman | 7 | 217 | 87.1% | 6.45% | 6.45% | 4.36 |
-| Taman Ekologi | 1 | 35 | 71.43% | 11.43% | 17.14% | 4.2 |
-| Taman Hiburan | 2 | 14 | 92.86% | 7.14% | 0.0% | 4.55 |
-| Taman Kota | 6 | 289 | 91.0% | 5.88% | 3.11% | 4.6 |
+| Spa | 1 | 18 | 100.0% | 0.0% | 0.0% | 4.4 |
+| Taman | 7 | 217 | 96.31% | 0.0% | 3.69% | 4.36 |
+| Taman Ekologi | 1 | 35 | 82.86% | 0.0% | 17.14% | 4.2 |
+| Taman Hiburan | 2 | 14 | 100.0% | 0.0% | 0.0% | 4.55 |
+| Taman Kota | 6 | 289 | 98.27% | 0.35% | 1.38% | 4.6 |
 | Taman Rekreasi Air | 1 | 1 | 100.0% | 0.0% | 0.0% | 5.0 |
-| Taman bermain | 5 | 43 | 88.37% | 4.65% | 6.98% | 4.76 |
+| Taman bermain | 5 | 43 | 93.02% | 0.0% | 6.98% | 4.76 |
 | Tempat Acara Memancing | 1 | 10 | 90.0% | 0.0% | 10.0% | 4.9 |
 | Titik Pemandangan | 2 | 7 | 100.0% | 0.0% | 0.0% | 4.85 |
-| Toko Makanan | 1 | 229 | 89.52% | 3.49% | 6.99% | 4.5 |
-| Tujuan Wisata | 129 | 5,289 | 87.05% | 5.28% | 7.68% | 4.5 |
+| Toko Makanan | 1 | 229 | 96.51% | 0.0% | 3.49% | 4.5 |
+| Tujuan Wisata | 129 | 5,289 | 94.27% | 0.96% | 4.76% | 4.5 |
 | Wilayah Lintas Alam | 1 | 5 | 100.0% | 0.0% | 0.0% | 4.4 |
 
 ## 7. Promotional Targets
@@ -118,54 +118,50 @@ Destinasi pariwisata unggulan dengan reputasi kepuasan publik tinggi (sentimen p
 
 | Nama Destinasi | Total Ulasan | Positif (%) | Avg Rating |
 | :--- | :---: | :---: | :---: |
-| Pantai Gunung Geder Cikelet | 11 | 100.0% | 4.2 |
-| Bukit Dinar Dirham | 16 | 100.0% | 4.8 |
-| Jip Wisata Garut | 16 | 100.0% | 5.0 |
-| Curug Ciarjuna | 11 | 100.0% | 4.8 |
-| Pabrik Teh Orthodoks Dayeuhmanggung - PTPN | 23 | 100.0% | 4.6 |
-| Curug Citiis | 10 | 100.0% | 4.6 |
-| Tujuh Curug Cimanganten | 16 | 100.0% | 4.5 |
-| Warung Asakan | 10 | 100.0% | 4.7 |
+| Wisata Sungai Ciharus | 41 | 100.0% | 4.5 |
 | Curug Rahong | 16 | 100.0% | 4.5 |
-| Wisata GUNUNG WAYANG | 16 | 100.0% | 4.5 |
+| Sumber mata air sirahna | 10 | 100.0% | 4.7 |
+| Rumah Makan Dua Saudara | 27 | 100.0% | 4.4 |
+| Pabrik Teh Orthodoks Dayeuhmanggung - PTPN | 23 | 100.0% | 4.6 |
+| Desa Wisata Situ Cangkuang | 11 | 100.0% | 4.7 |
+| Reverdose | 12 | 100.0% | 4.6 |
+| Puncak Parabon Kamojang | 18 | 100.0% | 4.4 |
+| Jip Wisata Garut | 16 | 100.0% | 5.0 |
+| Karacak Valley | 75 | 100.0% | 4.5 |
 
 ## 8. Monitoring / Improvement Targets
 Destinasi pariwisata dengan persentase ulasan netral yang relatif tinggi atau belum menunjukkan dominasi persepsi yang kuat:
 
 | Nama Destinasi | Total Ulasan | Netral (%) | Avg Rating |
 | :--- | :---: | :---: | :---: |
-| Wisata Situ Bagendit 2 | 21 | 23.81% | 4.4 |
-| Taman Kuliner CIbatu | 14 | 21.43% | 4.4 |
-| Wisata | 58 | 3.45% | 0.0 |
+| Wisata | 58 | 0.0% | 0.0 |
 
 ## 9. Policy Intervention Targets
 Destinasi pariwisata yang menunjukkan proporsi ulasan negatif relatif tinggi, direkomendasikan untuk ditinjau langsung oleh dinas terkait:
 
 | Nama Destinasi | Total Ulasan | Negatif (%) | Avg Rating |
 | :--- | :---: | :---: | :---: |
-| Rumah Makan Kencana Sunda | 47 | 55.32% | 4.0 |
-| Warung Bambu garut | 31 | 51.61% | 4.2 |
-| Waterboom Tirta Kencana | 33 | 39.39% | 4.0 |
-| WISATA BINAR ALAM VIEW | 24 | 37.5% | 4.3 |
-| Rumah Makan Megawati | 12 | 33.33% | 4.4 |
-| Kedai Itikurih | 132 | 33.33% | 4.3 |
-| Kolam renang cipanas indah | 25 | 32.0% | 4.0 |
-| Kampung Muara Sunda | 402 | 30.35% | 4.2 |
-| Kolam Renang dANAU DARIZA | 11 | 27.27% | 4.3 |
-| Sentral kuliner ikan garut | 19 | 26.32% | 4.1 |
+| Rumah Makan Kencana Sunda | 47 | 44.68% | 4.0 |
+| Warung Bambu garut | 31 | 41.94% | 4.2 |
+| Waterboom Tirta Kencana | 33 | 30.3% | 4.0 |
+| Kedai Itikurih | 132 | 28.79% | 4.3 |
+| Kampung Muara Sunda | 402 | 24.13% | 4.2 |
+| Wisata Pantai Santolo | 90 | 17.78% | 4.3 |
+| Kamojang Ecopark | 35 | 17.14% | 4.2 |
+| Racik Desa | 88 | 17.05% | 4.3 |
+| Rumah Makan Megawati | 12 | 16.67% | 4.4 |
+| Pantai santolo | 275 | 16.36% | 4.5 |
 
 ## 10. Interpretasi dan Rekomendasi Kebijakan
 Analisis interpretasi ini didasarkan pada data persepsi ulasan ulasan digital pariwisata:
 
 ### Rekomendasi Prioritas Intervensi:
-- Destinasi **Rumah Makan Kencana Sunda** memiliki proporsi prediksi sentimen negatif sebesar **55.32%** dari total **47** ulasan valid yang dianalisis. Temuan ini menunjukkan adanya ketidakpuasan pengunjung yang cukup tinggi secara statistik, sehingga destinasi tersebut direkomendasikan untuk diprioritaskan dalam evaluasi lapangan lebih lanjut oleh pemangku kepentingan pariwisata Kabupaten Garut.
-- Destinasi **Warung Bambu garut** memiliki proporsi prediksi sentimen negatif sebesar **51.61%** dari total **31** ulasan valid yang dianalisis. Temuan ini menunjukkan adanya ketidakpuasan pengunjung yang cukup tinggi secara statistik, sehingga destinasi tersebut direkomendasikan untuk diprioritaskan dalam evaluasi lapangan lebih lanjut oleh pemangku kepentingan pariwisata Kabupaten Garut.
-- Destinasi **Waterboom Tirta Kencana** memiliki proporsi prediksi sentimen negatif sebesar **39.39%** dari total **33** ulasan valid yang dianalisis. Temuan ini menunjukkan adanya ketidakpuasan pengunjung yang cukup tinggi secara statistik, sehingga destinasi tersebut direkomendasikan untuk diprioritaskan dalam evaluasi lapangan lebih lanjut oleh pemangku kepentingan pariwisata Kabupaten Garut.
+- Destinasi **Rumah Makan Kencana Sunda** memiliki proporsi prediksi sentimen negatif sebesar **44.68%** dari total **47** ulasan valid yang dianalisis. Temuan ini menunjukkan adanya ketidakpuasan pengunjung yang cukup tinggi secara statistik, sehingga destinasi tersebut direkomendasikan untuk diprioritaskan dalam evaluasi lapangan lebih lanjut oleh pemangku kepentingan pariwisata Kabupaten Garut.
+- Destinasi **Warung Bambu garut** memiliki proporsi prediksi sentimen negatif sebesar **41.94%** dari total **31** ulasan valid yang dianalisis. Temuan ini menunjukkan adanya ketidakpuasan pengunjung yang cukup tinggi secara statistik, sehingga destinasi tersebut direkomendasikan untuk diprioritaskan dalam evaluasi lapangan lebih lanjut oleh pemangku kepentingan pariwisata Kabupaten Garut.
+- Destinasi **Waterboom Tirta Kencana** memiliki proporsi prediksi sentimen negatif sebesar **30.3%** dari total **33** ulasan valid yang dianalisis. Temuan ini menunjukkan adanya ketidakpuasan pengunjung yang cukup tinggi secara statistik, sehingga destinasi tersebut direkomendasikan untuk diprioritaskan dalam evaluasi lapangan lebih lanjut oleh pemangku kepentingan pariwisata Kabupaten Garut.
 
 ### Analisis Pemantauan (Sentimen Netral):
-- Destinasi **Wisata Situ Bagendit 2** menunjukkan proporsi sentimen netral sebesar **23.81%** dari total **21** ulasan valid. Hal ini mengindikasikan bahwa impresi atau persepsi pengunjung terhadap destinasi pariwisata tersebut belum terbentuk ke arah positif maupun negatif secara dominan, sehingga direkomendasikan untuk pemantauan berkelanjutan terkait peningkatan mutu layanan.
-- Destinasi **Taman Kuliner CIbatu** menunjukkan proporsi sentimen netral sebesar **21.43%** dari total **14** ulasan valid. Hal ini mengindikasikan bahwa impresi atau persepsi pengunjung terhadap destinasi pariwisata tersebut belum terbentuk ke arah positif maupun negatif secara dominan, sehingga direkomendasikan untuk pemantauan berkelanjutan terkait peningkatan mutu layanan.
-- Destinasi **Wisata** menunjukkan proporsi sentimen netral sebesar **3.45%** dari total **58** ulasan valid. Hal ini mengindikasikan bahwa impresi atau persepsi pengunjung terhadap destinasi pariwisata tersebut belum terbentuk ke arah positif maupun negatif secara dominan, sehingga direkomendasikan untuk pemantauan berkelanjutan terkait peningkatan mutu layanan.
+- Destinasi **Wisata** menunjukkan proporsi sentimen netral sebesar **0.0%** dari total **58** ulasan valid. Hal ini mengindikasikan bahwa impresi atau persepsi pengunjung terhadap destinasi pariwisata tersebut belum terbentuk ke arah positif maupun negatif secara dominan, sehingga direkomendasikan untuk pemantauan berkelanjutan terkait peningkatan mutu layanan.
 
 ## 11. Kesimpulan
 Sistem analisis sentimen berbasis Linear SVM dan pemetaan kebijakan prioritas ini menyediakan sarana pendukung keputusan (*decision-support tool*) objektif bagi Dinas Pariwisata Kabupaten Garut untuk merencanakan alokasi promosi dan program peningkatan mutu destinasi wisata secara transparan berbasis data (*evidence-based policy*).
